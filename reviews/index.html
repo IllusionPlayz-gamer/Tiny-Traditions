@@ -65,7 +65,7 @@
             max-width: 1400px;
             margin: 40px auto;
             padding: 0 20px;
-            justify-content: center; /* Centers images on tablet */
+            justify-content: center;
         }
         .img-wrapper { 
             position: relative; 
@@ -81,12 +81,11 @@
             height: 100%;
             object-fit: cover;
             border-radius: 12px;
-            border: 2px solid #000; /* Your Black Border */
+            border: 2px solid #000;
             box-sizing: border-box;
             transition: transform 0.4s ease;
         }
         
-        /* Zoom effect only on Desktop (Devices with mouse) */
         @media (hover: hover) {
             .img-wrapper:hover img { transform: scale(0.94); }
             .fullscreen-btn { opacity: 0; }
@@ -130,11 +129,16 @@
             font-size: 1.1rem;
             transition: 0.3s;
             display: inline-block;
+            cursor: pointer;
+            border: none;
+            background: none;
         }
         .btn-review { background: #52B2B7; color: white; }
+        .btn-review:hover { background: #3d8f93; }
         .btn-home { border: 2px solid #52B2B7; color: #52B2B7; }
+        .btn-home:hover { background: #E6F9FF; }
 
-        /* --- MODAL --- */
+        /* --- IMAGE MODAL --- */
         #imgModal {
             display: none;
             position: fixed;
@@ -151,12 +155,273 @@
             border-radius: 8px;
         }
 
+        /* --- REVIEW MODAL --- */
+        #reviewModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 3001;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .review-modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .review-modal-content h2 {
+            margin: 0 0 25px 0;
+            color: #52B2B7;
+            font-size: 1.8rem;
+        }
+        .close-review-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            color: #999;
+            cursor: pointer;
+            border: none;
+            background: none;
+            transition: color 0.3s;
+        }
+        .close-review-modal:hover {
+            color: #333;
+        }
+
+        /* --- REVIEW FORM LAYOUT --- */
+        .photo-upload-section {
+            margin-bottom: 20px;
+        }
+        .photo-upload-label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        .photo-upload-btn {
+            display: inline-block;
+            padding: 12px 20px;
+            background: #E6F9FF;
+            border: 2px dashed #52B2B7;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #52B2B7;
+            transition: 0.3s;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .photo-upload-btn:hover {
+            background: #52B2B7;
+            color: white;
+        }
+        #photoInput {
+            display: none;
+        }
+        .photo-preview {
+            margin-top: 12px;
+            border-radius: 8px;
+            overflow: hidden;
+            display: none;
+        }
+        .photo-preview img {
+            width: 100%;
+            height: auto;
+            max-height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .photo-preview-info {
+            background: #f0f0f0;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            color: #666;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 0 0 8px 8px;
+        }
+        .remove-photo-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+        .remove-photo-btn:hover {
+            background: #ff3838;
+        }
+
+        /* --- FORM GROUPS --- */
+        .review-form-group {
+            margin-bottom: 18px;
+        }
+        .review-form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: #333;
+        }
+        .review-form-group input,
+        .review-form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        .review-form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .review-form-group input:focus,
+        .review-form-group textarea:focus {
+            outline: none;
+            border-color: #52B2B7;
+            box-shadow: 0 0 0 3px rgba(82, 178, 183, 0.1);
+        }
+
+        /* --- STAR RATING --- */
+        .star-rating {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .star {
+            font-size: 2.5rem;
+            cursor: pointer;
+            color: #ddd;
+            transition: all 0.2s ease;
+        }
+        .star:hover,
+        .star.active {
+            color: #FFD700;
+            transform: scale(1.2);
+        }
+        .star-label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: #333;
+        }
+        .rating-text {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 18px;
+        }
+
+        .submit-review-btn {
+            background: #52B2B7;
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+        }
+        .submit-review-btn:hover {
+            background: #3d8f93;
+        }
+        .submit-review-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* --- CONFIRMATION MODAL --- */
+        #confirmModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 3002;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .confirm-modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        .confirm-modal-content h2 {
+            margin: 0 0 15px 0;
+            color: #52B2B7;
+            font-size: 1.6rem;
+        }
+        .confirm-modal-content p {
+            color: #666;
+            margin: 0 0 30px 0;
+            font-size: 1.1rem;
+        }
+        .confirm-button-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        .confirm-btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            flex: 1;
+        }
+        .confirm-btn-yes {
+            background: #52B2B7;
+            color: white;
+        }
+        .confirm-btn-yes:hover {
+            background: #3d8f93;
+        }
+        .confirm-btn-no {
+            background: #e0e0e0;
+            color: #333;
+        }
+        .confirm-btn-no:hover {
+            background: #ccc;
+        }
+
+        .review-success-msg {
+            display: none;
+            color: #27ae60;
+            text-align: center;
+            padding: 20px;
+            background: #f0fff4;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
         /* --- RESPONSIVE FIXES --- */
         @media (max-width: 768px) {
             .title-header { font-size: 32pt; min-height: 15vh; }
-            .fullscreen-btn { opacity: 1 !important; } /* Always show on mobile */
+            .fullscreen-btn { opacity: 1 !important; }
             .button-group { flex-direction: column; align-items: center; }
             .btn { width: 80%; max-width: 300px; }
+            .review-modal-content { padding: 25px 20px; }
         }
     </style>
 </head>
@@ -174,28 +439,85 @@
         <h2 style="font-size: clamp(2rem, 8vw, 3.5rem); margin: 40px 0;">Customer Reviews</h2>
         
         <div class="reviews-grid">
-            <div class="img-wrapper"><img src="review1.jpeg" alt="Review"><button class="fullscreen-btn">⤢</button></div>
-            <div class="img-wrapper"><img src="review2.jpeg" alt="Review"><button class="fullscreen-btn">⤢</button></div>
-            <div class="img-wrapper"><img src="review3.jpeg" alt="Review"><button class="fullscreen-btn">⤢</button></div>
-            <div class="img-wrapper"><img src="review4.jpeg" alt="Review"><button class="fullscreen-btn">⤢</button></div>
-            <div class="img-wrapper"><img src="review5.jpeg" alt="Review"><button class="fullscreen-btn">⤢</button></div>
-            <div class="img-wrapper"><img src="review6.jpeg" alt="Review"><button class="fullscreen-btn">⤢</button></div>
-            <div class="img-wrapper"><img src="review7.jpeg" alt="Review"><button class="fullscreen-btn">⤢</button></div>
-            <div class="img-wrapper"><img src="review8.jpeg" alt="Review"><button class="fullscreen-btn">⤢</button></div>
+           
         </div>
     </div>
 
     <div class="cta-section">
         <p style="font-size: 1.4rem; margin-bottom: 25px;">Own a Tiny Tradition? We'd love to see it!</p>
         <div class="button-group">
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSelfbEghPET6QxA73D0_PXeAUzzE_quuW027YjarOClWE08BA/viewform" class="btn btn-review" target="_blank">Leave a Review</a>
+            <button class="btn btn-review" id="leaveReviewBtn">Leave a Review</button>
             <a href="/" class="btn btn-home">Back to Home</a>
         </div>
     </div>
 
+    <!-- Image Fullscreen Modal -->
     <div id="imgModal">
         <span id="closeModal" style="position:absolute; top:20px; right:30px; color:white; font-size:50px; cursor:pointer;">&times;</span>
         <img class="modal-content" id="modalImg">
+    </div>
+
+    <!-- Review Submission Modal -->
+    <div id="reviewModal">
+        <div class="review-modal-content">
+            <button class="close-review-modal" id="closeReviewModal">&times;</button>
+            <h2>Share Your Review</h2>
+            <form id="reviewForm">
+                <!-- Photo at Top -->
+                <div class="photo-upload-section">
+                    <label class="photo-upload-label">📸 Add a Photo (Optional)</label>
+                    <button type="button" class="photo-upload-btn" id="photoUploadBtn">Choose Photo</button>
+                    <input type="file" id="photoInput" accept="image/*" name="photo">
+                    <div class="photo-preview" id="photoPreview">
+                        <img id="previewImg" src="" alt="Preview">
+                        <div class="photo-preview-info">
+                            <span id="photoName">photo.jpg</span>
+                            <button type="button" class="remove-photo-btn" id="removePhotoBtn">Remove</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Star Rating -->
+                <div class="review-form-group">
+                    <label class="star-label">Rate Your Experience</label>
+                    <div class="star-rating" id="starRating">
+                        <span class="star" data-rating="1">★</span>
+                        <span class="star" data-rating="2">★</span>
+                        <span class="star" data-rating="3">★</span>
+                        <span class="star" data-rating="4">★</span>
+                        <span class="star" data-rating="5">★</span>
+                    </div>
+                    <div class="rating-text" id="ratingText">Select a rating</div>
+                    <input type="hidden" id="selectedRating" name="rating" value="0">
+                </div>
+
+                <!-- Name Field -->
+                <div class="review-form-group">
+                    <label for="reviewName">Your Name*</label>
+                    <input type="text" id="reviewName" name="name" required placeholder="Enter your name">
+                </div>
+
+                <!-- Review Text -->
+                <div class="review-form-group">
+                    <label for="reviewText">Your Review*</label>
+                    <textarea id="reviewText" name="review" required placeholder="Tell us about your Tiny Tradition experience..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-review-btn">Submit Review</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal">
+        <div class="confirm-modal-content">
+            <h2>Confirm Submission</h2>
+            <p>Are you sure you want to submit this review?</p>
+            <div class="confirm-button-group">
+                <button class="confirm-btn confirm-btn-yes" id="confirmYesBtn">Yes, Submit</button>
+                <button class="confirm-btn confirm-btn-no" id="confirmNoBtn">Cancel</button>
+            </div>
+        </div>
     </div>
 
     <div id="whatsapp-chat-button" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
@@ -205,19 +527,150 @@
     </div>
 
     <script>
-        const modal = document.getElementById('imgModal');
+        /* Image Fullscreen Modal */
+        const imgModal = document.getElementById('imgModal');
         const modalImg = document.getElementById('modalImg');
-        const closeBtn = document.getElementById('closeModal');
+        const closeImgBtn = document.getElementById('closeModal');
 
         document.querySelectorAll('.fullscreen-btn').forEach(btn => {
             btn.onclick = function() {
                 modalImg.src = this.previousElementSibling.src;
-                modal.style.display = 'flex';
+                imgModal.style.display = 'flex';
             };
         });
 
-        closeBtn.onclick = () => { modal.style.display = 'none'; };
-        window.onclick = (e) => { if (e.target == modal) modal.style.display = 'none'; };
+        closeImgBtn.onclick = () => { imgModal.style.display = 'none'; };
+        window.onclick = (e) => { 
+            if (e.target == imgModal) imgModal.style.display = 'none'; 
+            if (e.target == reviewModal) reviewModal.style.display = 'none';
+        };
+
+        /* Review Modal */
+        const reviewModal = document.getElementById('reviewModal');
+        const confirmModal = document.getElementById('confirmModal');
+        const leaveReviewBtn = document.getElementById('leaveReviewBtn');
+        const closeReviewBtn = document.getElementById('closeReviewModal');
+        const reviewForm = document.getElementById('reviewForm');
+        const confirmYesBtn = document.getElementById('confirmYesBtn');
+        const confirmNoBtn = document.getElementById('confirmNoBtn');
+
+        leaveReviewBtn.onclick = () => {
+            reviewModal.style.display = 'flex';
+        };
+
+        closeReviewBtn.onclick = () => {
+            reviewModal.style.display = 'none';
+        };
+
+        confirmNoBtn.onclick = () => {
+            confirmModal.style.display = 'none';
+        };
+
+        reviewForm.onsubmit = (e) => {
+            e.preventDefault();
+            confirmModal.style.display = 'flex';
+        };
+
+        confirmYesBtn.onclick = async () => {
+            const name = document.getElementById('reviewName').value;
+            const review = document.getElementById('reviewText').value;
+            const rating = document.getElementById('selectedRating').value;
+            const photoInput = document.getElementById('photoInput');
+
+            console.log('Review submitted:', { name, review, rating, hasPhoto: photoInput.files.length > 0 });
+
+            // Close modals
+            confirmModal.style.display = 'none';
+            reviewModal.style.display = 'none';
+
+            // Show success (in a real app, you'd save to database here)
+            alert('✅ Thank you! Your review has been submitted!');
+
+            // Reset form
+            reviewForm.reset();
+            document.querySelectorAll('.star').forEach(s => s.classList.remove('active'));
+            document.getElementById('ratingText').innerText = 'Select a rating';
+            document.getElementById('selectedRating').value = 0;
+            document.getElementById('photoPreview').style.display = 'none';
+        };
+
+        /* Star Rating Interactive */
+        const stars = document.querySelectorAll('.star');
+        const ratingText = document.getElementById('ratingText');
+        const selectedRatingInput = document.getElementById('selectedRating');
+        const ratingTexts = ['', 'Poor 😞', 'Fair 😐', 'Good 😊', 'Very Good 😄', 'Excellent 🤩'];
+
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                const rating = star.getAttribute('data-rating');
+                selectedRatingInput.value = rating;
+                ratingText.innerText = ratingTexts[rating];
+                
+                stars.forEach(s => {
+                    if (s.getAttribute('data-rating') <= rating) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+            });
+
+            star.addEventListener('mouseenter', () => {
+                const rating = star.getAttribute('data-rating');
+                stars.forEach(s => {
+                    if (s.getAttribute('data-rating') <= rating) {
+                        s.style.color = '#FFD700';
+                    } else {
+                        s.style.color = '#ddd';
+                    }
+                });
+            });
+        });
+
+        document.getElementById('starRating').addEventListener('mouseleave', () => {
+            const currentRating = selectedRatingInput.value;
+            stars.forEach(s => {
+                if (currentRating && s.getAttribute('data-rating') <= currentRating) {
+                    s.style.color = '#FFD700';
+                } else {
+                    s.style.color = '#ddd';
+                }
+            });
+        });
+
+        /* Photo Upload Functionality */
+        const photoUploadBtn = document.getElementById('photoUploadBtn');
+        const photoInput = document.getElementById('photoInput');
+        const photoPreview = document.getElementById('photoPreview');
+        const previewImg = document.getElementById('previewImg');
+        const photoName = document.getElementById('photoName');
+        const removePhotoBtn = document.getElementById('removePhotoBtn');
+
+        photoUploadBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            photoInput.click();
+        });
+
+        photoInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    previewImg.src = event.target.result;
+                    photoName.innerText = file.name;
+                    photoPreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        removePhotoBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            photoInput.value = '';
+            photoPreview.style.display = 'none';
+            previewImg.src = '';
+            photoName.innerText = 'photo.jpg';
+        });
     </script>
 
 </body>
