@@ -577,13 +577,16 @@
             const rating = document.getElementById('selectedRating').value;
             const photoInput = document.getElementById('photoInput');
 
-            console.log('Review submitted:', { name, review, rating, hasPhoto: photoInput.files.length > 0 });
+            // Save review to Firebase
+            if (window.saveReviewToFirebase) {
+                await window.saveReviewToFirebase(name, review, rating, photoInput.files[0] || null);
+            }
 
             // Close modals
             confirmModal.style.display = 'none';
             reviewModal.style.display = 'none';
 
-            // Show success (in a real app, you'd save to database here)
+            // Show success
             alert('✅ Thank you! Your review has been submitted!');
 
             // Reset form
@@ -673,5 +676,57 @@
         });
     </script>
 
+    <script type="module">
+      // Import Firebase functions
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+      import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-database.js";
+
+      // Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyBP46yjVi_lPzfBh21PRGWMGhOSyiCHtHI",
+        authDomain: "tiny-traditions-reviews.firebaseapp.com",
+        databaseURL: "https://tiny-traditions-reviews-default-rtdb.firebaseio.com",
+        projectId: "tiny-traditions-reviews",
+        storageBucket: "tiny-traditions-reviews.firebasestorage.app",
+        messagingSenderId: "219463628157",
+        appId: "1:219463628157:web:bd7a15231f89fc9fd88814",
+        measurementId: "G-D4QQXN8BHK"
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+
+      // Global function to save review to Firebase
+      window.saveReviewToFirebase = async (name, review, rating, photoFile) => {
+        const reviewsRef = ref(db, 'reviews');
+        const newReviewRef = push(reviewsRef);
+        
+        let photoURL = null;
+        // In a real app, you'd upload the photo to Firebase Storage first
+        // For now, we'll just save the review data
+        
+        await set(newReviewRef, {
+          name: name,
+          review: review,
+          rating: rating,
+          timestamp: Date.now(),
+          photoURL: photoURL
+        });
+      };
+
+      // Fetch and display reviews
+      function fetchReviews() {
+        const reviewsRef = ref(db, 'reviews');
+        onValue(reviewsRef, (snapshot) => {
+          const reviews = snapshot.val();
+          const reviewsGrid = document.querySelector('.reviews-grid');
+          // This can be used to display reviews if needed
+          console.log('Reviews:', reviews);
+        });
+      }
+
+      fetchReviews();
+    </script>
 </body>
 </html>
