@@ -77,8 +77,9 @@
         </div>
 
         <form id="unifiedForm">
+            <div class="form-group"><label>Name*</label><input type="text" name="name" id="userName"></div>
+            
             <div id="emailFields">
-                <div class="form-group"><label>Name*</label><input type="text" name="name" id="userName"></div>
                 <div class="form-group"><label>Email*</label><input type="email" name="email" id="userEmail"></div>
                 <div class="form-group"><label>Address*</label><textarea name="address" id="userAddress" rows="3" placeholder="Full shipping address..."></textarea></div>
             </div>
@@ -225,8 +226,9 @@ document.getElementById('unifiedForm').onsubmit = async (e) => {
 
     } else {
         // WhatsApp Logic
+        const name = document.getElementById('userName').value || "Guest";
         const itemsMsg = cart.map(i => `• *${i.item}*\n  $${i.price.toFixed(2)} (Qty: ${i.quantity})`).join("\n\n");
-        const fullMsg = `✨ *NEW ORDER* ✨\n\n${itemsMsg}\n\n💰 *${totalText}*\n\n📝 *MESSAGE:* ${notes}`;
+        const fullMsg = `✨ *NEW ORDER* ✨\n\n👤 *Name:* ${name}\n\n${itemsMsg}\n\n💰 *${totalText}*\n\n📝 *MESSAGE:* ${notes}`;
         
         // Log to sheet first
         fetch(waLogScriptURL, { 
