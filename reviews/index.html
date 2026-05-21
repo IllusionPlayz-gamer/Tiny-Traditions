@@ -60,13 +60,45 @@
         /* --- REVIEWS GRID --- */
         .reviews-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 24px;
             max-width: 1400px;
             margin: 40px auto;
             padding: 0 20px;
             justify-content: center;
         }
+
+        /* --- REVIEW TILE --- */
+        .review-tile {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 200px;
+        }
+        .review-tile:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            transform: translateY(-4px);
+        }
+        .review-tile-text {
+            color: #666;
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        .review-tile-author {
+            font-weight: bold;
+            font-size: 1.05rem;
+            color: #52B2B7;
+            text-align: right;
+        }
+
         .img-wrapper { 
             position: relative; 
             overflow: hidden;
@@ -167,7 +199,6 @@
             padding: 20px;
         }
 
-
         /* --- RESPONSIVE FIXES --- */
         @media (max-width: 768px) {
             .title-header { font-size: 32pt; min-height: 15vh; }
@@ -175,6 +206,15 @@
             .button-group { flex-direction: column; align-items: center; }
             .btn { width: 80%; max-width: 300px; }
             .review-modal-content { padding: 25px 20px; }
+            .reviews-grid {
+                grid-template-columns: 1fr;
+            }
+            .review-tile-header {
+                flex-direction: column;
+            }
+            .review-tile-rating {
+                align-self: flex-start;
+            }
         }
     </style>
 </head>
@@ -192,7 +232,31 @@
         <h2 style="font-size: clamp(2rem, 8vw, 3.5rem); margin: 40px 0;">Customer Reviews</h2>
         
         <div class="reviews-grid">
-           
+            <!-- Simple Review Tiles -->
+            <div class="review-tile">
+                <p class="review-tile-text">"Custom made, equally cute and functional for any occasion! Modern designs with a hint traditional look which I love it!"</p>
+                <p class="review-tile-author">— Fionna</p>
+            </div>
+
+            <div class="review-tile">
+                <p class="review-tile-text">"It is such a joy to see these kids making beautiful rakhis at home with so much creativity, patience, and love. Their talent and enthusiasm are truly inspiring. Each rakhi is unique and made with heartfelt effort. Wonderful to see young minds keeping traditions alive in such a creative way. Wishing them lots of success and appreciation for their amazing work! Love the rakhis I ordered 💕"</p>
+                <p class="review-tile-author">— Sumati</p>
+            </div>
+
+            <div class="review-tile">
+                <p class="review-tile-text">"My order was delivered with a beautiful smile."</p>
+                <p class="review-tile-author">— Elizabeth F.</p>
+            </div>
+
+            <div class="review-tile">
+                <p class="review-tile-text">"That it’s handmade and money goes to Type 1 Diabetes research."</p>
+                <p class="review-tile-author">— Tiny Traditions Customer</p>
+            </div>
+
+            <div class="review-tile">
+                <p class="review-tile-text">"Cutest rakhis ever!! The quality is amazing,  and you can truly see the effort in every piece. The designs are creative with perfect color combination. So proud of the young creators. Will be back for more!"</p>
+                <p class="review-tile-author">— Saumya V.</p>
+            </div>
         </div>
     </div>
 
@@ -205,12 +269,10 @@
     </div>
 
     <!-- Image Fullscreen Modal -->
-    <div id="imgModal">
+    <div id="imgModal" style="display: none;">
         <span id="closeModal" style="position:absolute; top:20px; right:30px; color:white; font-size:50px; cursor:pointer;">&times;</span>
         <img class="modal-content" id="modalImg">
     </div>
-
-
 
     <div id="whatsapp-chat-button" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
         <a href="https://wa.me/5125604283" target="_blank">
@@ -219,23 +281,6 @@
     </div>
 
     <script>
-        /* Image Fullscreen Modal */
-        const imgModal = document.getElementById('imgModal');
-        const modalImg = document.getElementById('modalImg');
-        const closeImgBtn = document.getElementById('closeModal');
-
-        document.querySelectorAll('.fullscreen-btn').forEach(btn => {
-            btn.onclick = function() {
-                modalImg.src = this.previousElementSibling.src;
-                imgModal.style.display = 'flex';
-            };
-        });
-
-        closeImgBtn.onclick = () => { imgModal.style.display = 'none'; };
-        window.onclick = (e) => { 
-            if (e.target == imgModal) imgModal.style.display = 'none'; 
-        };
-
         /* Leave Review Button - Redirect to Google Form */
         const leaveReviewBtn = document.getElementById('leaveReviewBtn');
         leaveReviewBtn.onclick = () => {
