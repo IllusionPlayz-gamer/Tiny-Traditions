@@ -80,11 +80,25 @@
             flex-direction: column;
             justify-content: space-between;
             min-height: 200px;
+            animation: fadeIn 0.5s ease-in;
         }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .review-tile:hover {
             box-shadow: 0 8px 24px rgba(0,0,0,0.15);
             transform: translateY(-4px);
         }
+        
         .review-tile-text {
             color: #666;
             font-size: 1rem;
@@ -92,6 +106,7 @@
             margin-bottom: 20px;
             font-style: italic;
         }
+        
         .review-tile-author {
             font-weight: bold;
             font-size: 1.05rem;
@@ -99,45 +114,33 @@
             text-align: right;
         }
 
-        .img-wrapper { 
-            position: relative; 
-            overflow: hidden;
-            border-radius: 12px;
-            aspect-ratio: 4 / 5;
-            background: #f8f8f8;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-        }
-        .img-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 12px;
-            border: 2px solid #000;
-            box-sizing: border-box;
-            transition: transform 0.4s ease;
+        /* --- LOADING STATE --- */
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 300px;
         }
         
-        @media (hover: hover) {
-            .img-wrapper:hover img { transform: scale(0.94); }
-            .fullscreen-btn { opacity: 0; }
-            .img-wrapper:hover .fullscreen-btn { opacity: 1; }
+        .spinner {
+            border: 4px solid #E6F9FF;
+            border-top: 4px solid #52B2B7;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        /* --- FULLSCREEN BUTTON --- */
-        .fullscreen-btn {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: rgba(0,0,0,0.7);
-            border: none;
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1.2rem;
-            z-index: 5;
-            transition: 0.3s;
+        .no-reviews {
+            text-align: center;
+            color: #999;
+            padding: 60px 20px;
+            font-size: 1.1rem;
         }
 
         /* --- CTA BUTTONS --- */
@@ -170,50 +173,13 @@
         .btn-home { border: 2px solid #52B2B7; color: #52B2B7; }
         .btn-home:hover { background: #E6F9FF; }
 
-        /* --- IMAGE MODAL --- */
-        #imgModal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.95);
-            z-index: 3000;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-content {
-            max-width: 90%;
-            max-height: 85vh;
-            border: 2px solid white;
-            border-radius: 8px;
-        }
-
-        /* --- CONFIRMATION MODAL --- */
-        #confirmModal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
-            z-index: 3002;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
         /* --- RESPONSIVE FIXES --- */
         @media (max-width: 768px) {
             .title-header { font-size: 32pt; min-height: 15vh; }
-            .fullscreen-btn { opacity: 1 !important; }
             .button-group { flex-direction: column; align-items: center; }
             .btn { width: 80%; max-width: 300px; }
-            .review-modal-content { padding: 25px 20px; }
             .reviews-grid {
                 grid-template-columns: 1fr;
-            }
-            .review-tile-header {
-                flex-direction: column;
-            }
-            .review-tile-rating {
-                align-self: flex-start;
             }
         }
     </style>
@@ -231,31 +197,9 @@
     <div style="text-align:center;">
         <h2 style="font-size: clamp(2rem, 8vw, 3.5rem); margin: 40px 0;">Customer Reviews</h2>
         
-        <div class="reviews-grid">
-            <!-- Simple Review Tiles -->
-            <div class="review-tile">
-                <p class="review-tile-text">"Custom made, equally cute and functional for any occasion! Modern designs with a hint traditional look which I love it!"</p>
-                <p class="review-tile-author">— Fionna</p>
-            </div>
-
-            <div class="review-tile">
-                <p class="review-tile-text">"It is such a joy to see these kids making beautiful rakhis at home with so much creativity, patience, and love. Their talent and enthusiasm are truly inspiring. Each rakhi is unique and made with heartfelt effort. Wonderful to see young minds keeping traditions alive in such a creative way. Wishing them lots of success and appreciation for their amazing work! Love the rakhis I ordered 💕"</p>
-                <p class="review-tile-author">— Sumati</p>
-            </div>
-
-            <div class="review-tile">
-                <p class="review-tile-text">"My order was delivered with a beautiful smile."</p>
-                <p class="review-tile-author">— Elizabeth F.</p>
-            </div>
-
-            <div class="review-tile">
-                <p class="review-tile-text">"That it’s handmade and money goes to Type 1 Diabetes research."</p>
-                <p class="review-tile-author">— Tiny Traditions Customer</p>
-            </div>
-
-            <div class="review-tile">
-                <p class="review-tile-text">"Cutest rakhis ever!! The quality is amazing,  and you can truly see the effort in every piece. The designs are creative with perfect color combination. So proud of the young creators. Will be back for more!"</p>
-                <p class="review-tile-author">— Saumya V.</p>
+        <div class="reviews-grid" id="reviewsContainer">
+            <div class="loading-spinner">
+                <div class="spinner"></div>
             </div>
         </div>
     </div>
@@ -268,12 +212,6 @@
         </div>
     </div>
 
-    <!-- Image Fullscreen Modal -->
-    <div id="imgModal" style="display: none;">
-        <span id="closeModal" style="position:absolute; top:20px; right:30px; color:white; font-size:50px; cursor:pointer;">&times;</span>
-        <img class="modal-content" id="modalImg">
-    </div>
-
     <div id="whatsapp-chat-button" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
         <a href="https://wa.me/5125604283" target="_blank">
             <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="Chat" style="width: 50px; height: 50px;">
@@ -281,6 +219,145 @@
     </div>
 
     <script>
+        // ========================================
+        // GOOGLE SHEET INTEGRATION
+        // ========================================
+        
+        // SETUP INSTRUCTIONS:
+        // 1. Open your Google Sheet
+        // 2. Click File > Share > Get shareable link (set to "Viewer" access)
+        // 3. Copy the Sheet ID from the URL (between /d/ and /edit)
+        // 4. Replace 'YOUR_SHEET_ID_HERE' below with your actual Sheet ID
+        
+        const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID_HERE/export?format=csv';
+        
+        async function fetchApprovedReviews() {
+            const container = document.getElementById('reviewsContainer');
+            
+            try {
+                // Fetch CSV from Google Sheets
+                const response = await fetch(SHEET_CSV_URL);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch reviews');
+                }
+                
+                const csvText = await response.text();
+                const reviews = parseCSV(csvText);
+                
+                // Filter for approved reviews (column K = "Yes")
+                const approvedReviews = reviews.filter(review => 
+                    review.approved && review.approved.toLowerCase().trim() === 'yes'
+                );
+                
+                if (approvedReviews.length === 0) {
+                    container.innerHTML = '<div class="no-reviews">No reviews yet. Be the first to share your experience!</div>';
+                    return;
+                }
+                
+                // Display approved reviews
+                container.innerHTML = '';
+                approvedReviews.forEach(review => {
+                    const tile = createReviewTile(review.name, review.review);
+                    container.appendChild(tile);
+                });
+                
+            } catch (error) {
+                console.error('Error fetching reviews:', error);
+                container.innerHTML = '<div class="no-reviews">Unable to load reviews at the moment. Please try again later.</div>';
+            }
+        }
+        
+        function parseCSV(csvText) {
+            const lines = csvText.trim().split('\n');
+            if (lines.length < 2) return [];
+            
+            // Parse header row
+            const headers = parseCSVLine(lines[0]);
+            
+            // Find column indices by name
+            const nameIndex = headers.findIndex(h => 
+                h.toLowerCase().includes('name') || 
+                h.toLowerCase().includes('timestamp') ||
+                h === 'A'
+            );
+            
+            const reviewIndex = headers.findIndex(h => 
+                h.toLowerCase().includes('review') || 
+                h.toLowerCase().includes('main review') ||
+                h === 'D'
+            );
+            
+            const approvedIndex = headers.findIndex(h => 
+                h.toLowerCase().includes('approved') || 
+                h.toLowerCase().includes('publish') ||
+                h === 'K'
+            );
+            
+            // Use defaults if not found
+            const actualNameIndex = nameIndex >= 0 ? nameIndex : 0; // Column A
+            const actualReviewIndex = reviewIndex >= 0 ? reviewIndex : 3; // Column D
+            const actualApprovedIndex = approvedIndex >= 0 ? approvedIndex : 10; // Column K
+            
+            // Parse data rows (skip header row)
+            const reviews = [];
+            for (let i = 1; i < lines.length; i++) {
+                if (!lines[i].trim()) continue; // Skip empty lines
+                
+                const values = parseCSVLine(lines[i]);
+                
+                if (values.length > Math.max(actualNameIndex, actualReviewIndex, actualApprovedIndex)) {
+                    reviews.push({
+                        name: values[actualNameIndex]?.trim() || 'Anonymous',
+                        review: values[actualReviewIndex]?.trim() || '',
+                        approved: values[actualApprovedIndex]?.trim() || ''
+                    });
+                }
+            }
+            
+            return reviews;
+        }
+        
+        function parseCSVLine(line) {
+            const result = [];
+            let current = '';
+            let insideQuotes = false;
+            
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                
+                if (char === '"') {
+                    insideQuotes = !insideQuotes;
+                } else if (char === ',' && !insideQuotes) {
+                    result.push(current);
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            
+            result.push(current);
+            return result;
+        }
+        
+        function createReviewTile(name, reviewText) {
+            const tile = document.createElement('div');
+            tile.className = 'review-tile';
+            
+            tile.innerHTML = `
+                <p class="review-tile-text">"${reviewText}"</p>
+                <p class="review-tile-author">— ${name}</p>
+            `;
+            
+            return tile;
+        }
+        
+        // Load reviews when page loads
+        window.addEventListener('load', fetchApprovedReviews);
+        
+        // Refresh reviews every 5 minutes (300000 ms)
+        setInterval(fetchApprovedReviews, 5 * 60 * 1000);
+        
         /* Leave Review Button - Redirect to Google Form */
         const leaveReviewBtn = document.getElementById('leaveReviewBtn');
         leaveReviewBtn.onclick = () => {
