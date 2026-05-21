@@ -229,7 +229,7 @@
         // 3. Copy the Sheet ID from the URL (between /d/ and /edit)
         // 4. Replace 'YOUR_SHEET_ID_HERE' below with your actual Sheet ID
         
-        const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID_HERE/export?format=csv';
+        const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/1eMflau3UaO7P6vwQ3SUEsnPbu02A4fGzQ7-eQKuqN88/export?format=csv';
         
         async function fetchApprovedReviews() {
             const container = document.getElementById('reviewsContainer');
@@ -245,10 +245,12 @@
                 const csvText = await response.text();
                 const reviews = parseCSV(csvText);
                 
-                // Filter for approved reviews (column K = "Yes")
+                // Filter for approved reviews - already filtered in parseCSV
                 const approvedReviews = reviews.filter(review => {
-                    const isApproved = review.approved.toLowerCase() === 'yes';
-                    console.log(`Review by ${review.name}: Approved value = "${review.approved}" (${isApproved})`);
+                    const isApproved = review.approved.toLowerCase() === 'true' || 
+                                      review.approved === '✔' || 
+                                      review.approved.toLowerCase() === 'yes' ||
+                                      review.approved === 'x';
                     return isApproved;
                 });
                 
@@ -274,30 +276,56 @@
             const lines = csvText.trim().split('\n');
             if (lines.length < 2) return [];
             
-            // Parse data rows - use fixed column positions
-            // Column A (index 0) = Name
-            // Column D (index 3) = Main Review
-            // Column K (index 10) = Approved
+            // Get header to find the correct column positions
+            const headers = parseCSVLine(lines[0]);
+            
+            console.log('Headers found:', headers);
+            
+            // Find column indices by header match
+            let nameIdx = 0;
+            let reviewIdx = 3;
+            let approvedIdx = 10;
+            
+            headers.forEach((header, idx) => {
+                const h = header.trim();
+                if (h.includes('Customer Name')) nameIdx = idx;
+                if (h.includes('What did you love most')) reviewIdx = idx;
+                if (h.includes('OK for website')) approvedIdx = idx;
+            });
+            
+            console.log('Detected columns - Name:', nameIdx, 'Review:', reviewIdx, 'Approved:', approvedIdx);
+            
             const reviews = [];
             
             for (let i = 1; i < lines.length; i++) {
-                if (!lines[i].trim()) continue; // Skip empty lines
+                if (!lines[i].trim()) continue;
                 
                 const values = parseCSVLine(lines[i]);
                 
-                if (values.length > 10) { // Need at least 11 columns (0-10 for K)
-                    const approvedValue = values[10]?.trim() || '';
-                    const name = values[0]?.trim() || 'Anonymous';
-                    const review = values[3]?.trim() || '';
+                if (values.length > Math.max(nameIdx, reviewIdx, approvedIdx)) {
+                    const name = values[nameIdx]?.trim() || '';
+                    const review = values[reviewIdx]?.trim() || '';
+                    const approved = values[approvedIdx]?.trim() || '';
                     
-                    reviews.push({
-                        name: name,
-                        review: review,
-                        approved: approvedValue
-                    });
+                    // Check if approved column is checked (could be "TRUE", "Yes", "✔", etc.)
+                    const isApproved = approved.toLowerCase() === 'true' || 
+                                      approved === '✔' || 
+                                      approved.toLowerCase() === 'yes' ||
+                                      approved === 'x';
+                    
+                    if (name && review && isApproved) {
+                        console.log(`Row ${i}: Name="${name}", Approved="${approved}" (isApproved=${isApproved})`);
+                        
+                        reviews.push({
+                            name: name,
+                            review: review,
+                            approved: approved
+                        });
+                    }
                 }
             }
             
+            console.log('Total approved reviews found:', reviews.length);
             return reviews;
         }
         
