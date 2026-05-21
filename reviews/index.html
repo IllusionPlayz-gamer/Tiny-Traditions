@@ -246,9 +246,11 @@
                 const reviews = parseCSV(csvText);
                 
                 // Filter for approved reviews (column K = "Yes")
-                const approvedReviews = reviews.filter(review => 
-                    review.approved && review.approved.toLowerCase().trim() === 'yes'
-                );
+                const approvedReviews = reviews.filter(review => {
+                    const isApproved = review.approved.toLowerCase() === 'yes';
+                    console.log(`Review by ${review.name}: Approved value = "${review.approved}" (${isApproved})`);
+                    return isApproved;
+                });
                 
                 if (approvedReviews.length === 0) {
                     container.innerHTML = '<div class="no-reviews">No reviews yet. Be the first to share your experience!</div>';
@@ -272,45 +274,26 @@
             const lines = csvText.trim().split('\n');
             if (lines.length < 2) return [];
             
-            // Parse header row
-            const headers = parseCSVLine(lines[0]);
-            
-            // Find column indices by name
-            const nameIndex = headers.findIndex(h => 
-                h.toLowerCase().includes('name') || 
-                h.toLowerCase().includes('timestamp') ||
-                h === 'A'
-            );
-            
-            const reviewIndex = headers.findIndex(h => 
-                h.toLowerCase().includes('review') || 
-                h.toLowerCase().includes('main review') ||
-                h === 'D'
-            );
-            
-            const approvedIndex = headers.findIndex(h => 
-                h.toLowerCase().includes('approved') || 
-                h.toLowerCase().includes('publish') ||
-                h === 'K'
-            );
-            
-            // Use defaults if not found
-            const actualNameIndex = nameIndex >= 0 ? nameIndex : 0; // Column A
-            const actualReviewIndex = reviewIndex >= 0 ? reviewIndex : 3; // Column D
-            const actualApprovedIndex = approvedIndex >= 0 ? approvedIndex : 10; // Column K
-            
-            // Parse data rows (skip header row)
+            // Parse data rows - use fixed column positions
+            // Column A (index 0) = Name
+            // Column D (index 3) = Main Review
+            // Column K (index 10) = Approved
             const reviews = [];
+            
             for (let i = 1; i < lines.length; i++) {
                 if (!lines[i].trim()) continue; // Skip empty lines
                 
                 const values = parseCSVLine(lines[i]);
                 
-                if (values.length > Math.max(actualNameIndex, actualReviewIndex, actualApprovedIndex)) {
+                if (values.length > 10) { // Need at least 11 columns (0-10 for K)
+                    const approvedValue = values[10]?.trim() || '';
+                    const name = values[0]?.trim() || 'Anonymous';
+                    const review = values[3]?.trim() || '';
+                    
                     reviews.push({
-                        name: values[actualNameIndex]?.trim() || 'Anonymous',
-                        review: values[actualReviewIndex]?.trim() || '',
-                        approved: values[actualApprovedIndex]?.trim() || ''
+                        name: name,
+                        review: review,
+                        approved: approvedValue
                     });
                 }
             }
@@ -354,9 +337,6 @@
         
         // Load reviews when page loads
         window.addEventListener('load', fetchApprovedReviews);
-        
-        // Refresh reviews every 5 minutes (300000 ms)
-        setInterval(fetchApprovedReviews, 5 * 60 * 1000);
         
         /* Leave Review Button - Redirect to Google Form */
         const leaveReviewBtn = document.getElementById('leaveReviewBtn');
