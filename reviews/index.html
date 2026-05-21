@@ -303,17 +303,20 @@
                 const values = parseCSVLine(lines[i]);
                 
                 if (values.length > Math.max(nameIdx, reviewIdx, approvedIdx)) {
-                    const name = values[nameIdx]?.trim() || '';
+                    const nameRaw = values[nameIdx]?.trim() || '';
                     const review = values[reviewIdx]?.trim() || '';
                     const approved = values[approvedIdx]?.trim() || '';
                     
-                    // Check if approved column is checked (could be "TRUE", "Yes", "✔", etc.)
+                    // Use default name if empty
+                    const name = nameRaw || 'Tiny Traditions Customer';
+                    
+                    // Check if approved column is checked
                     const isApproved = approved.toLowerCase() === 'true' || 
                                       approved === '✔' || 
                                       approved.toLowerCase() === 'yes' ||
                                       approved === 'x';
                     
-                    if (name && review && isApproved) {
+                    if (review && isApproved) {
                         console.log(`Row ${i}: Name="${name}", Approved="${approved}" (isApproved=${isApproved})`);
                         
                         reviews.push({
