@@ -130,7 +130,7 @@
 
     <div class="nav-bar">
         <div class="nav-btn-container">
-            <button class="back-btn" onclick="window.history.back()" title="Go back">←</button>
+            <button class="back-btn" onclick="window.location.href='/'" title="Go back">←</button>
             <div class="checkout-wrapper">
     <a href="/form/?method=email" class="order-btn btn-email">
         Email <span class="cart-total-pill" id="cart-total">$0.00</span>
@@ -185,9 +185,11 @@ async function loadProducts() {
 
             productsFound++;
 
-            // FIXED DRIVE TRANSFORMER
+            // FIXED DRIVE TRANSFORMER - Converts usp=drivesdk to usp=drive_link
             let imgUrl = r.c[1] ? r.c[1].v : "";
             if (imgUrl.includes("drive.google.com")) {
+                // Convert usp=drivesdk to usp=drive_link for compatibility
+                imgUrl = imgUrl.replace(/usp=drivesdk/g, 'usp=drive_link');
                 const idMatch = imgUrl.match(/[-\w]{25,}/);
                 if (idMatch) imgUrl = `https://lh3.googleusercontent.com/d/${idMatch[0]}`;
             }
