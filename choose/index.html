@@ -130,7 +130,7 @@
 
     <div class="nav-bar">
         <div class="nav-btn-container">
-            <button class="back-btn" onclick="window.location.href='/'" title="Go back">←</button>
+            <button class="back-btn" onclick="window.location.href='/'" title="Go to home">←</button>
             <div class="checkout-wrapper">
     <a href="/form/?method=email" class="order-btn btn-email">
         Email <span class="cart-total-pill" id="cart-total">$0.00</span>
@@ -185,13 +185,15 @@ async function loadProducts() {
 
             productsFound++;
 
-            // FIXED DRIVE TRANSFORMER - Converts usp=drivesdk to usp=drive_link
+            // FIXED DRIVE TRANSFORMER - Converts all Google Drive links to direct export format
             let imgUrl = r.c[1] ? r.c[1].v : "";
             if (imgUrl.includes("drive.google.com")) {
-                // Convert usp=drivesdk to usp=drive_link for compatibility
-                imgUrl = imgUrl.replace(/usp=drivesdk/g, 'usp=drive_link');
-                const idMatch = imgUrl.match(/[-\w]{25,}/);
-                if (idMatch) imgUrl = `https://lh3.googleusercontent.com/d/${idMatch[0]}`;
+                // Extract the file ID from the URL
+                const idMatch = imgUrl.match(/\/d\/([a-zA-Z0-9-_]+)/);
+                if (idMatch) {
+                    // Convert to direct export URL that works with drivesdk
+                    imgUrl = `https://drive.google.com/uc?export=view&id=${idMatch[1]}`;
+                }
             }
 
             const rawPrice = r.c[4] ? String(r.c[4].v) : "0";
