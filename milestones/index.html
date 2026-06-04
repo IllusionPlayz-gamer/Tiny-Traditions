@@ -134,19 +134,34 @@
             margin-bottom: 25px;
         }
 
+        /* UPDATED VIDEO WRAPPER FOR VERTICAL REELS */
         .video-frame {
             margin-top: 20px;
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-            background: white;
-            aspect-ratio: 16 / 9;
+            background: #000; /* Black backdrop helps frame standard players natively */
+            aspect-ratio: 9 / 16; /* Swapped to portrait match phone record proportions */
+            max-width: 320px; /* Prevents vertical frames from becoming massive on wide views */
+            width: 100%;
+        }
+
+        /* Centers the video cards perfectly inside their respective layout sides */
+        .milestone:nth-child(odd) .video-frame {
+            margin-left: auto;
+            margin-right: 0;
+        }
+        
+        .milestone:nth-child(even) .video-frame {
+            margin-left: 0;
+            margin-right: auto;
         }
 
         .video-frame iframe {
             width: 100%;
             height: 100%;
             border: none;
+            display: block;
         }
 
         .cta-section {
@@ -203,6 +218,13 @@
                 margin: 0;
             }
 
+            /* Resets alignment to left-aligned for clean stacking on mobile views */
+            .milestone:nth-child(odd) .video-frame,
+            .milestone:nth-child(even) .video-frame {
+                margin-left: 0;
+                margin-right: auto;
+            }
+
             .milestone-number {
                 font-size: 2rem;
             }
@@ -233,7 +255,7 @@
                 <div class="milestone-dot"></div>
                 <div class="content">
                     <div class="milestone-number">100</div>
-                    <div class="milestone-text">Our first 100 this year. We can't thank you enough.</div>
+                    <div class="milestone-text">Our first 100 this year. We can't thank you enough.<br>Here is Myrah thanking Heta Aunty for placing our 100th order!</div>
                     <div class="video-frame">
                         <iframe src="https://drive.google.com/file/d/1PGZ9bCD2YGS8UXs7ir6floF2ydSp66dU/preview" allowfullscreen="" loading="lazy"></iframe>
                     </div>
@@ -244,7 +266,7 @@
                 <div class="milestone-dot"></div>
                 <div class="content">
                     <div class="milestone-number">150</div>
-                    <div class="milestone-text">150 orders, and we're still amazed!</div>
+                    <div class="milestone-text">150 orders, and we're still amazed!<br>Here is Sisira thanking Ms. Fitzpatrick for placing our 150th order!</div>
                     <div class="video-frame">
                         <iframe src="https://drive.google.com/file/d/1EtLFJrd7Ws0ASue7ySUiXwJdnggp-ihQ/preview" allowfullscreen="" loading="lazy"></iframe>
                     </div>
@@ -255,7 +277,7 @@
                 <div class="milestone-dot"></div>
                 <div class="content">
                     <div class="milestone-number">200</div>
-                    <div class="milestone-text">Double century achieved! 🚀</div>
+                    <div class="milestone-text">Double century achieved! 🚀<br>Here is Avyaan thanking Ms. Lisa for placing our 200th order!</div>
                     <div class="video-frame">
                         <iframe src="https://drive.google.com/file/d/1mHcheiEOGALyQMOYr9elmvy1kx3gJncM/preview" allowfullscreen="" loading="lazy"></iframe>
                     </div>
