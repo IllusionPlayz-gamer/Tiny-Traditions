@@ -1,548 +1,347 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Milestones - Tiny Traditions</title>
-
     <link href="https://fonts.googleapis.com/css2?family=Volkhov:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-
     <style>
-
         * { box-sizing: border-box; }
-
         body {
-
             font-family: 'Volkhov', serif;
-
             background-color: #fffaf8;
-
             margin: 0;
-
             padding: 0;
-
             color: #333;
-
         }
-
-
 
         .header {
-
             background-color: #52B2B7;
-
             color: white;
-
             padding: 40px 20px;
-
             text-align: center;
-
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-
         }
-
-
 
         .header h1 {
-
             margin: 0;
-
             font-size: 2.5rem;
-
         }
-
-
 
         .nav {
-
             background-color: #E6F9FF;
-
             padding: 15px;
-
             text-align: center;
-
             border-bottom: 2px solid #c0efff;
-
             position: sticky;
-
             top: 0;
-
             z-index: 100;
-
         }
-
-
 
         .nav a {
-
             color: #52B2B7;
-
             text-decoration: none;
-
             font-weight: bold;
-
             font-size: 1.1rem;
-
         }
-
-
 
         .nav a:hover {
-
             opacity: 0.7;
-
         }
 
+        /* Banner Styles */
+        .banner {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 60px 20px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
 
+        /* FIXED: Home Banner configuration at the top */
+        #home-banner {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('images/home-hero.jpg');
+            background-color: #ff9f43; /* Fallback color */
+            min-height: 400px;
+        }
+
+        /* FIXED: Tiny Traditions Banner configuration for the inner showcase section */
+        #tiny-traditions-banner {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('images/tiny-traditions-hero.jpg');
+            background-color: #ee5253; /* Fallback color */
+            min-height: 250px;
+            margin-top: 40px;
+        }
+
+        .banner-content h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .banner-content p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 20px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #ffffff;
+            color: #b85c00;
+            padding: 10px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.2s, background-color 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            background-color: #f0f0f0;
+        }
 
         .page-title {
-
             padding: 30px 20px;
-
             text-align: center;
-
             background-color: transparent;
-
         }
-
-
 
         .page-title h2 {
-
             margin: 0;
-
             font-size: 1.8rem;
-
             color: #333;
-
             font-weight: normal;
-
         }
-
-
 
         .container {
-
             max-width: 1200px;
-
             margin: 0 auto;
-
             padding: 60px 20px;
-
         }
-
-
 
         .timeline {
-
             position: relative;
-
             padding: 20px 0;
-
         }
-
-
 
         .timeline::before {
-
             content: '';
-
             position: absolute;
-
             left: 50%;
-
             transform: translateX(-50%);
-
             width: 4px;
-
             height: 100%;
-
             background: linear-gradient(180deg, #52B2B7, #E6F9FF);
-
             top: 0;
-
         }
-
-
 
         .milestone {
-
             margin-bottom: 80px;
-
             position: relative;
-
         }
-
-
 
         .milestone:nth-child(odd) .content {
-
             margin-left: 0;
-
             margin-right: auto;
-
             width: 45%;
-
             text-align: right;
-
             padding-right: 60px;
-
         }
-
-
 
         .milestone:nth-child(even) .content {
-
             margin-left: auto;
-
             margin-right: 0;
-
             width: 45%;
-
             text-align: left;
-
             padding-left: 60px;
-
         }
-
-
 
         .milestone-dot {
-
             position: absolute;
-
             left: 50%;
-
             transform: translateX(-50%);
-
             width: 30px;
-
             height: 30px;
-
             background: #52B2B7;
-
             border: 4px solid white;
-
             border-radius: 50%;
-
             top: 0;
-
             z-index: 10;
-
             box-shadow: 0 0 0 4px #52B2B7;
-
         }
-
-
 
         .milestone-number {
-
             font-size: 3rem;
-
             font-weight: bold;
-
             color: #52B2B7;
-
             margin-bottom: 15px;
-
         }
-
-
 
         .milestone-text {
-
             font-size: 1.3rem;
-
             color: #555;
-
             margin-bottom: 25px;
-
         }
-
-
 
         .video-frame {
-
             margin-top: 20px;
-
             border-radius: 12px;
-
             overflow: hidden;
-
             box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-
             background: white;
-
             aspect-ratio: 16 / 9;
-
         }
-
-
 
         .video-frame iframe {
-
             width: 100%;
-
             height: 100%;
-
             border: none;
-
         }
-
-
 
         .cta-section {
-
             text-align: center;
-
             padding: 60px 20px;
-
             background: linear-gradient(135deg, #E6F9FF, #fff3e0);
-
             border-radius: 16px;
-
             margin-top: 60px;
-
         }
-
-
 
         .cta-section h2 {
-
             color: #52B2B7;
-
             font-size: 2.5rem;
-
             margin-bottom: 20px;
-
         }
-
-
 
         .cta-section p {
-
             font-size: 1.2rem;
-
             color: #555;
-
             margin-bottom: 30px;
-
         }
-
-
 
         .cta-btn {
-
             background: #52B2B7;
-
             color: white;
-
             padding: 16px 40px;
-
             text-decoration: none;
-
             border-radius: 50px;
-
             font-weight: bold;
-
             font-size: 1.1rem;
-
             transition: 0.3s;
-
             display: inline-block;
-
         }
-
-
 
         .cta-btn:hover {
-
             background: #3d8f93;
-
         }
-
-
 
         @media (max-width: 768px) {
-
             .timeline::before {
-
                 left: 30px;
-
             }
-
-
 
             .milestone-dot {
-
                 left: 30px;
-
             }
-
-
 
             .milestone:nth-child(odd) .content,
-
             .milestone:nth-child(even) .content {
-
                 width: 100%;
-
                 text-align: left;
-
                 padding-left: 80px;
-
                 padding-right: 20px;
-
                 margin: 0;
-
             }
-
-
 
             .milestone-number {
-
                 font-size: 2rem;
-
             }
-
-
 
             .header h1 {
-
                 font-size: 1.8rem;
-
             }
-
         }
-
     </style>
-
 </head>
-
 <body>
 
-
-
     <div class="nav">
-
         <a href="/">Home</a>
-
     </div>
 
-
+    <section id="home-banner" class="banner">
+        <div class="banner-content">
+            <h1>Welcome to Our Home</h1>
+            <p>Discover beautiful, handcrafted creations made with love and tradition for every special occasion.</p>
+            <a href="#" class="btn">Explore Collection</a>
+        </div>
+    </section>
 
     <div class="header">
-
         <h1>Tiny Traditions</h1>
-
     </div>
-
-
 
     <div class="page-title">
-
         <h2>Milestones of 2026</h2>
-
     </div>
-
-
 
     <div class="container">
-
         <div class="timeline">
-
-            <!-- 100 Orders Milestone -->
-
             <div class="milestone">
-
                 <div class="milestone-dot"></div>
-
                 <div class="content">
-
                     <div class="milestone-number">100</div>
-
                     <div class="milestone-text">Our first 100 this year. We can't thank you enough.</div>
-
                     <div class="video-frame">
-
                         <iframe src="https://drive.google.com/file/d/1PGZ9bCD2YGS8UXs7ir6floF2ydSp66dU/preview" allowfullscreen="" loading="lazy"></iframe>
-
                     </div>
-
                 </div>
-
             </div>
 
-
-
-            <!-- 150 Orders Milestone -->
-
             <div class="milestone">
-
                 <div class="milestone-dot"></div>
-
                 <div class="content">
-
                     <div class="milestone-number">150</div>
-
                     <div class="milestone-text">150 orders, and we're still amazed!</div>
-
                     <div class="video-frame">
-
                         <iframe src="https://drive.google.com/file/d/1EtLFJrd7Ws0ASue7ySUiXwJdnggp-ihQ/preview" allowfullscreen="" loading="lazy"></iframe>
-
                     </div>
-
                 </div>
-
             </div>
-
-
-
-            <!-- 200 Orders Milestone -->
 
             <div class="milestone">
-
                 <div class="milestone-dot"></div>
-
                 <div class="content">
-
                     <div class="milestone-number">200</div>
-
                     <div class="milestone-text">Double century achieved! 🚀</div>
-
                     <div class="video-frame">
-
                         <iframe src="https://drive.google.com/file/d/1mHcheiEOGALyQMOYr9elmvy1kx3gJncM/preview" allowfullscreen="" loading="lazy"></iframe>
-
                     </div>
-
                 </div>
-
             </div>
-
         </div>
 
-
+        <section id="tiny-traditions-banner" class="banner">
+            <div class="banner-content">
+                <h1>The Tiny Traditions Collection</h1>
+                <p>Spreading joy through intricate, custom-made designs perfect for your loved ones.</p>
+                <a href="#" class="btn">View Designs</a>
+            </div>
+        </section>
 
         <div class="cta-section">
-
-            <h1>Ready to start your tradition?</h1>
-
+            <h2>Ready to start your tradition?</h2>
             <a href=".\" class="cta-btn">Shop the Collection</a>
-
         </div>
-
     </div>
 
-
-
 </body>
-
-</html> 
-
+</html>
