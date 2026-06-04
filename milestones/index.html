@@ -15,6 +15,7 @@
             color: #333;
         }
 
+        /* The Tiny Traditions banner is now styled for the very top position */
         .header {
             background-color: #52B2B7;
             color: white;
@@ -28,6 +29,7 @@
             font-size: 2.5rem;
         }
 
+        /* The Home link banner is now styled to sit neatly underneath the main header */
         .nav {
             background-color: #E6F9FF;
             padding: 15px;
@@ -47,66 +49,6 @@
 
         .nav a:hover {
             opacity: 0.7;
-        }
-
-        /* Banner Styles */
-        .banner {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            padding: 60px 20px;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        /* FIXED: Home Banner configuration at the top */
-        #home-banner {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('images/home-hero.jpg');
-            background-color: #ff9f43; /* Fallback color */
-            min-height: 400px;
-        }
-
-        /* FIXED: Tiny Traditions Banner configuration for the inner showcase section */
-        #tiny-traditions-banner {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('images/tiny-traditions-hero.jpg');
-            background-color: #ee5253; /* Fallback color */
-            min-height: 250px;
-            margin-top: 40px;
-        }
-
-        .banner-content h1 {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .banner-content p {
-            font-size: 1.2rem;
-            max-width: 600px;
-            margin: 0 auto 20px;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-        }
-
-        .btn {
-            display: inline-block;
-            background-color: #ffffff;
-            color: #b85c00;
-            padding: 10px 24px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: transform 0.2s, background-color 0.2s;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            transform: scale(1.05);
-            background-color: #f0f0f0;
         }
 
         .page-title {
@@ -273,20 +215,12 @@
 </head>
 <body>
 
-    <div class="nav">
-        <a href="/">Home</a>
-    </div>
-
-    <section id="home-banner" class="banner">
-        <div class="banner-content">
-            <h1>Welcome to Our Home</h1>
-            <p>Discover beautiful, handcrafted creations made with love and tradition for every special occasion.</p>
-            <a href="#" class="btn">Explore Collection</a>
-        </div>
-    </section>
-
     <div class="header">
         <h1>Tiny Traditions</h1>
+    </div>
+
+    <div class="nav">
+        <a href="/">Home</a>
     </div>
 
     <div class="page-title">
@@ -328,14 +262,6 @@
                 </div>
             </div>
         </div>
-
-        <section id="tiny-traditions-banner" class="banner">
-            <div class="banner-content">
-                <h1>The Tiny Traditions Collection</h1>
-                <p>Spreading joy through intricate, custom-made designs perfect for your loved ones.</p>
-                <a href="#" class="btn">View Designs</a>
-            </div>
-        </section>
 
         <div class="cta-section">
             <h2>Ready to start your tradition?</h2>
