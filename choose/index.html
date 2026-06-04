@@ -185,14 +185,12 @@ async function loadProducts() {
 
             productsFound++;
 
-            // FIXED DRIVE TRANSFORMER - Converts all Google Drive links to direct export format
+            // FIXED DRIVE TRANSFORMER - Extract file ID and use Google's image server
             let imgUrl = r.c[1] ? r.c[1].v : "";
             if (imgUrl.includes("drive.google.com")) {
-                // Extract the file ID from the URL
                 const idMatch = imgUrl.match(/\/d\/([a-zA-Z0-9-_]+)/);
                 if (idMatch) {
-                    // Convert to direct export URL that works with drivesdk
-                    imgUrl = `https://drive.google.com/uc?export=view&id=${idMatch[1]}`;
+                    imgUrl = `https://lh3.googleusercontent.com/d/${idMatch[1]}`;
                 }
             }
 
