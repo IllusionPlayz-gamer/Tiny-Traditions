@@ -203,7 +203,7 @@ async function loadProducts() {
 
             container.innerHTML += `
                 <div class="item-card" data-image="${imgUrl}">
-                    <div class="img-square"><img src="${imgUrl}" onerror="this.src='../images/logo.png'"></div>
+                    <div class="img-square"><img src="${imgUrl}" onerror="this.src='/logo.png'"></div>
                     <div class="right-content">
                         <h3>${name}</h3>
                         <p class="price">$${priceNum.toFixed(2)}</p>
